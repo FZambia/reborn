@@ -16,7 +16,7 @@ To run with default behaviour which supposed to work with Reddit create `server/
 {
   "app.debug": false,
   "app.secret_key": "XXX",
-  "database.url": "sqlite:////db/reborndb.sqlite3",
+  "app.database.url": "sqlite:////db/reborndb.sqlite3",
   "loaders.reddit.enabled": true,
   "loaders.reddit.client_id": "XXX",
   "loaders.reddit.secret": "XXX"
