@@ -2,7 +2,7 @@ Reborn is a dashboard for interesting content.
 
 See [demo gif (~70mb)](https://i.imgur.com/bjk8QQM.gifv)
 
-[Screenshot](https://raw.githubusercontent.com/FZambia/reborn/master/screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/FZambia/reborn/master/screenshot.png)
 
 It was built for my personal needs – to get content from reddit.com filtered by score. But looks like it can be used to collect content from other resources with similar mechanics too.
 
