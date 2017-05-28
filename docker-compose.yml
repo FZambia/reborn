@@ -1,0 +1,20 @@
+version: '2'
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "10000:9000"
+    volumes:
+      - ./deploy/nginx:/etc/nginx/conf.d
+      - ./web/dist:/var/www/html
+    volumes_from:
+      - backend
+    depends_on:
+      - backend
+  backend:
+    build: .
+    expose:
+      - "8000"
+    volumes:
+      - ./server:/server
+      - ./data:/db

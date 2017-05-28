@@ -1,0 +1,12 @@
+.idea/
+.vscode
+
+env/
+*.pyc
+server/local_settings.py
+server/db.sqlite3
+server/config.json
+data/
+
+web/node_modules
+web/build

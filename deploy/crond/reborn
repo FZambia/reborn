@@ -1,0 +1,1 @@
+* * * * * root REBORN_CONFIG=/server/config.json /usr/local/bin/python /server/manage.py load >> /var/log/cron.log 2>&1
