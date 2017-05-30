@@ -24,11 +24,12 @@ def notify_telegram(entries):
         return
 
     for entry in entries:
-        text = "{} ({})".format(entry.url, entry.subscription.source)
+        text = "[{}]({}) ({})".format(entry.title, entry.url, entry.subscription.source)
 
         data = {
             'chat_id': chat_id,
-            'text': text
+            'text': text,
+            'parse_mode': 'Markdown'
         }
 
         try:
