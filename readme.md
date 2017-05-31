@@ -40,19 +40,17 @@ make stop
 
 You need to have `docker` and `docker-compose` installed.
 
-Open http://localhost:10000/ - it should show login screen.
+Open http://localhost:10000/ - it should show login screen. You need a user account.
 
-### Initial setup
-
-Then create user:
+To create user:
 
 ```
 make createsuperuser
 ```
 
-And use its credentials to proceed to app.
+And then use its credentials to proceed to app.
 
-In admin interface you can also create new users.
+In admin interface (http://localhost:10000/admin/) you can also create new users.
 
 SQLite database will be created inside `./data` directory - this dir is mounted volume to container so database is persistent. It's git-ignored.
 
