@@ -25,7 +25,7 @@ class HackerNewsLoader:
             "https://hacker-news.firebaseio.com/v0/{}stories.json".format(source)
         ).json()
 
-        for item_id in data:
+        for item_id in data[:30]:
             item = requests.get(
                 "https://hacker-news.firebaseio.com/v0/item/{}.json".format(item_id)
             ).json()
