@@ -26,7 +26,7 @@ class Command(BaseCommand):
               timedelta(minutes=20)) | Q(checked_at__isnull=True)
         )
         for provider in providers:
-            loader_func = loader_funcs.get(provider.name)
+            loader_func = loader_funcs.get(provider.name.lower())
             if not loader_func:
                 continue
             sources = Subscription.objects.filter(
