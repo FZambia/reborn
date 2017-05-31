@@ -16,14 +16,9 @@ To run with default behaviour which supposed to work with Reddit create `server/
 {
   "app.debug": false,
   "app.secret_key": "XXX",
-  "app.database.url": "sqlite:////db/reborndb.sqlite3",
-  "loaders.reddit.enabled": true,
-  "loaders.reddit.client_id": "XXX",
-  "loaders.reddit.secret": "XXX"
+  "app.database.url": "sqlite:////db/reborndb.sqlite3"
 }
 ```
-
-– where `"loaders.reddit.client_id"` and `"loaders.reddit.secret"` are credentials of Reddit application you should create.
 
 And then run:
 
@@ -57,9 +52,39 @@ make createsuperuser
 
 And use its credentials to proceed to app.
 
-Create `reddit` provider in admin interface: http://localhost:10000/admin/ and start creating subscriptions in web interface. It will be populated with entries very soon (with cron job inside container). In admin interface you can also create new users.
+In admin interface you can also create new users.
 
 SQLite database will be created inside `./data` directory - this dir is mounted volume to container so database is persistent. It's git-ignored.
+
+### Loaders
+
+Reborn has built in loaders for Reddit and Hacker News.
+
+To enable Reddit loader add to config:
+
+```json
+{
+    ...
+    "loaders.reddit.enabled": true,
+    "loaders.reddit.client_id": "XXX",
+    "loaders.reddit.secret": "XXX"
+}
+```
+
+– where `"loaders.reddit.client_id"` and `"loaders.reddit.secret"` are credentials of Reddit application you should create.
+
+Create provider in admin interface with name `reddit` (http://localhost:10000/admin/core/provider/) and then start creating subscriptions on subreddits in web interface. Your subscriptions will be populated with entries very soon (by cron job inside container). 
+
+For Hacker news create provider with name `hacker news` and add to config file:
+
+```json
+{
+    ...
+    "loaders.hackernews.enabled": true
+}
+```
+
+Available sources are `top`, `ask`, `show`, `new`, `best` - make subscriptions on those you are interested in using web interface and set score you like to filter entries by.
 
 ### Telegram notifications
 
@@ -81,11 +106,19 @@ Then add lines to configuration file and restart service:
 
 ### Development
 
-Currently it's not very comfortable - you need to run webpack, Django server and use Nginx.
+You can develop using `docker-compose` as described above (you need to restart it every time you make changes in Python code) but it uses prepared minified web app - to modify Javascript web app you need to run webpack, Django server and use Nginx.
 
 You run Django server as usual - create virtualenv, install dependencies from `requirements.txt` and then:
 
-Create `config.json` in `server` directory with `"app.debug": true` option.
+Create `config.json` in `server` directory:
+
+```json
+{
+    "app.debug": true
+}
+```
+
+Start Django server:
 
 ```
 python manage.py runserver 8000
