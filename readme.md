@@ -8,15 +8,15 @@ It was built for my personal needs – to get content from reddit.com filtered b
 
 The idea is simple - I'll try to describe it in terms of Reddit. On Reddit there are many subreddits I am interested in. My everyday pattern is go to Reddit and check out my favorite subreddits for interesting news. With Reborn I can create subscriptions to news in subreddits that achieved a certain vote score and those news will be retrieved from Reddit API and saved into Reborn database. Saved entries can be viewed via Reborn web interface and also Reborn supports notifications to Telegram chat.
 
-Currently Reborn optimized for personal single-user setup, though it's possible to add users via admin interface. Reborn uses SQLite as database – but as backend built on top of Django it's not a difficult task to use MySQL or PostgreSQL as more performant and scalable alternative. Also at moment Telegram notifications can be sent to one chat only (chat id must be defined in configuration file). Another caveat is that Reddit loader is built into backend, Reborn has HTTP API so it's possible to create custom decoupled loaders for other custom content providers.  
+Currently Reborn optimized for personal single-user setup, though it's possible to add users via admin interface so you can also give access to your friends. This is why Reborn uses SQLite as database – though as backend built on top of Django it's not a difficult task to use MySQL or PostgreSQL as more performant and scalable alternative. Also at moment Telegram notifications can be sent to one chat only (chat id must be defined in configuration file). Another caveat is that Reddit loader is built into backend, Reborn has HTTP API so it's possible to create custom decoupled loaders for other custom content providers.
 
 To run clone repo and create `config.json` file inside `server` directory (this `config.json` file is git-ignored):
 
 ```json
 {
-  "app.debug": false,
-  "app.secret_key": "XXX",
-  "app.database.url": "sqlite:////db/reborndb.sqlite3"
+    "app.debug": false,
+    "app.secret_key": "XXX",
+    "app.database.url": "sqlite:////db/reborndb.sqlite3"
 }
 ```
 
@@ -92,9 +92,9 @@ Then add lines to configuration file and restart service:
 
 ```json
 {
-  ...
-  "notifications.telegram.bot_token": "BOT_TOKEN",
-  "notifications.telegram.chat_id": "CHAT_ID"
+    ...
+    "notifications.telegram.bot_token": "BOT_TOKEN",
+    "notifications.telegram.chat_id": "CHAT_ID"
 }
 ```
 
