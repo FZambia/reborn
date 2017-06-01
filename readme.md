@@ -10,7 +10,7 @@ The idea is simple - I'll try to describe it in terms of Reddit. On Reddit there
 
 Currently Reborn optimized for personal single-user setup, though it's possible to add users via admin interface. Reborn uses SQLite as database – but as backend built on top of Django it's not a difficult task to use MySQL or PostgreSQL as more performant and scalable alternative. Also at moment Telegram notifications can be sent to one chat only (chat id must be defined in configuration file). Another caveat is that Reddit loader is built into backend, Reborn has HTTP API so it's possible to create custom decoupled loaders for other custom content providers.  
 
-To run with default behaviour which supposed to work with Reddit create `server/config.json` file:
+To run clone repo and create `config.json` file inside `server` directory (this `config.json` file is git-ignored):
 
 ```json
 {
@@ -20,7 +20,7 @@ To run with default behaviour which supposed to work with Reddit create `server/
 }
 ```
 
-And then run:
+You need to have `docker` and `docker-compose` installed. If you have them installed run:
 
 ```
 make up
@@ -38,25 +38,19 @@ To stop service:
 make stop
 ```
 
-You need to have `docker` and `docker-compose` installed.
-
-Open http://localhost:10000/ - it should show login screen. You need a user account.
-
-To create user:
+Open http://localhost:10000/ - it should show login screen. You now need a user account. To create user:
 
 ```
 make createsuperuser
 ```
 
-And then use its credentials to proceed to app.
+And then use its credentials to proceed to app. In admin interface (http://localhost:10000/admin/) you can also create new users.
 
-In admin interface (http://localhost:10000/admin/) you can also create new users.
-
-SQLite database will be created inside `./data` directory - this dir is mounted volume to container so database is persistent. It's git-ignored.
+SQLite database will be created inside `./data` directory - this directory is a mounted volume to container so database is persistent. Like configuration file it's git-ignored.
 
 ### Loaders
 
-Reborn has built in loaders for Reddit and Hacker News.
+Reborn has builtin loaders for Reddit and Hacker News.
 
 To enable Reddit loader add to config:
 
@@ -69,7 +63,7 @@ To enable Reddit loader add to config:
 }
 ```
 
-– where `"loaders.reddit.client_id"` and `"loaders.reddit.secret"` are credentials of Reddit application you should create.
+– where `"loaders.reddit.client_id"` and `"loaders.reddit.secret"` are credentials of Reddit application you should create on reddit.com site. Restart service.
 
 Create provider in admin interface with name `reddit` (http://localhost:10000/admin/core/provider/) and then start creating subscriptions on subreddits in web interface. Your subscriptions will be populated with entries very soon (by cron job inside container). 
 
@@ -83,6 +77,8 @@ For Hacker news create provider with name `hacker news` and add to config file:
 ```
 
 Available sources are `top`, `ask`, `show`, `new`, `best` - make subscriptions on those you are interested in using web interface and set score you like to filter entries by.
+
+You can create custom providers and loader for it. Reborn has HTTP API that allows to upload new entries for provider subscriptions. More details soon.
 
 ### Telegram notifications
 
