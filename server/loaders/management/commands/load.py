@@ -19,13 +19,13 @@ class Command(BaseCommand):
     help = "Load from content providers"
 
     def handle(self, *args, **options):
-        providers = Provider.objects.filter(
-            is_active=True
-        ).filter(
-            Q(checked_at__lte=timezone.now() -
-              timedelta(minutes=20)) | Q(checked_at__isnull=True)
-        )
+        providers = Provider.objects.filter(is_active=True)
         for provider in providers:
+            now = timezone.now()
+            checked_at = provider.checked_at
+            if checked_at and checked_at > now - timedelta(minutes=provider.load_interval):
+                # too early for this provider.
+                continue
             loader_func = loader_funcs.get(provider.name.lower())
             if not loader_func:
                 continue

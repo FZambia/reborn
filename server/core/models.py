@@ -6,6 +6,10 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 
+# in minutes
+DEFAULT_LOAD_INTERVAL = 20
+
+
 class Provider(models.Model):
     """
     Provider is a resource that provides content (Reddit for example).
@@ -14,6 +18,7 @@ class Provider(models.Model):
     description = models.TextField(blank=True)
     checked_at = models.DateTimeField(blank=True, null=True)
     is_active = models.BooleanField(default=True)
+    load_interval = models.IntegerField(default=DEFAULT_LOAD_INTERVAL, help_text="in minutes")
 
     class Meta:
         verbose_name = _("provider")
