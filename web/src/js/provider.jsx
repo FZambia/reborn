@@ -37,10 +37,11 @@ class Provider extends React.Component {
     handleProviderClick(e) {
         var subscriptions = $(ReactDOM.findDOMNode(this.refs.subscriptions));
         subscriptions.toggleClass("subscriptions-hidden");
+        var key = "subscriptions_hidden_" + this.props.provider.id;
         if (subscriptions.hasClass("subscriptions-hidden")) {
-            localStorage.subscriptions_hidden = "1";
+            localStorage[key] = "1";
         } else {
-            localStorage.subscriptions_hidden = "0";
+            localStorage[key] = "0";
         }
         return false;
     }
@@ -55,9 +56,10 @@ class Provider extends React.Component {
             rows.push(<SubscriptionRow provider={this.props.provider} subscription={item} key={item.id} />)
         }.bind(this));
 
+        var hiddenKey = "subscriptions_hidden_" + this.props.provider.id;
         var subscriptionsClasses = classNames({
             'subscriptions': true,
-            'subscriptions-hidden': localStorage.subscriptions_hidden === "1"
+            'subscriptions-hidden': localStorage[hiddenKey] === "1"
         });
 
         return (
