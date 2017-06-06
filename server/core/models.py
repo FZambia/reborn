@@ -1,5 +1,4 @@
 # coding: utf-8
-import uuid
 from hashlib import md5
 from django.db import models
 from django.conf import settings
@@ -28,28 +27,6 @@ class Provider(models.Model):
         return self.name
 
 
-class Loader(models.Model):
-    """
-    Loader loads content from provider resource.
-    """
-    name = models.CharField(max_length=64)
-    token = models.CharField(max_length=128, blank=True)
-    provider = models.ForeignKey(Provider, blank=True, null=True)
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name = _("loader")
-        verbose_name_plural = _("loaders")
-
-    def save(self, **kwargs):
-        if not self.pk and not self.token:
-            self.token = uuid.uuid4().hex
-        super(Loader, self).save(**kwargs)
-
-    def __str__(self):
-        return self.name
-
-
 class Category(models.Model):
     """
     User defined category for entries.
@@ -67,23 +44,38 @@ class Category(models.Model):
         return u"{0} by {1}".format(self.name, self.user.username)
 
 
+class Source(models.Model):
+    """
+    Source represents topic in each provider user can subscribe to.
+    """
+    provider = models.ForeignKey(Provider)
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return "{0} ({1})".format(self.name, self.provider.name)
+
+    class Meta:
+        verbose_name = _("source")
+        verbose_name_plural = _("sources")
+        unique_together = ('provider', 'name')
+
+
 class Subscription(models.Model):
     """
     User defined subscription to source string from provider.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    provider = models.ForeignKey(Provider)
-    source = models.CharField(max_length=100)
+    source = models.ForeignKey(Source)
     score = models.PositiveIntegerField(default=0)
     categories = models.ManyToManyField(Category, blank=True)
 
     def __str__(self):
-        return u"{0} by {1}".format(self.source, self.user.username)
+        return "{0} by {1}".format(self.source, self.user.username)
 
     class Meta:
         verbose_name = _("subscription")
         verbose_name_plural = _("subscriptions")
-        unique_together = ('user', 'provider', 'source')
+        unique_together = ('user', 'source')
 
 
 class Entry(models.Model):

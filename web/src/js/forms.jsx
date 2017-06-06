@@ -140,7 +140,12 @@ class SubscriptionForm extends React.Component {
 
     componentWillMount() {
         if (this.props.subscription) {
-            this.setState({subscription: this.props.subscription});
+            var subscription = {
+                "score": this.props.subscription.score,
+                "categories": this.props.subscription.categories,
+                "source": this.props.subscription.source.name
+            }
+            this.setState({subscription: subscription});
         } else {
             this.setState(this.getInitialState());
         }
@@ -151,7 +156,12 @@ class SubscriptionForm extends React.Component {
             if (this.props.subscription && this.props.subscription.id == nextProps.subscription.id) {
                 return
             }
-            this.setState({subscription: nextProps.subscription});
+            var subscription = {
+                "score": nextProps.subscription.score,
+                "categories": nextProps.subscription.categories,
+                "source": nextProps.subscription.source.name
+            }
+            this.setState({subscription: subscription});
         } else {
             this.setState(this.getInitialState());
         }

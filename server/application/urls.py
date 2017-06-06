@@ -67,6 +67,7 @@ urlpatterns = [
     url(r'^api/v1/init/', init),
     url(r'^api/v1/logout/', logout_user),
     url(r'^api/', include('core.urls')),
+    url(r'^api/', include('loaders.urls')),
 ]
 
 

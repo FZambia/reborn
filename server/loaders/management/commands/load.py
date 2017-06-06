@@ -1,11 +1,10 @@
 from django.core.management.base import BaseCommand
 from core.models import Provider, Subscription
-from core.views import process_sources_data
-from loaders.reddit import load as reddit_load
-from loaders.hackernews import load as hackernews_load
+from loaders.views import process_sources_data
+from loaders.providers.reddit import load as reddit_load
+from loaders.providers.hackernews import load as hackernews_load
 from datetime import timedelta
 from django.utils import timezone
-from django.db.models import Q
 
 
 loader_funcs = {
