@@ -20,10 +20,10 @@ createsuperuser:
 	docker-compose run backend python manage.py createsuperuser
 
 shell-nginx:
-	docker exec -ti nginx bash
+	docker exec -ti reborn_nginx_1 bash
 
 shell-backend:
-	docker exec -ti backend bash
+	docker exec -ti reborn_backend_1 bash
 
 log-nginx:
 	docker-compose logs nginx
