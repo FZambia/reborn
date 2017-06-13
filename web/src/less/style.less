@@ -701,19 +701,29 @@ a.entry-source {
 	opacity: 1;
 }
 
-.logout {
+.logo-button() {
     position: absolute;
-    right: 10px;
     top: 20px;
     font-size: 20px;
     cursor: pointer;
     color: @primary_color_muted;
-    margin-left: 20px;
     .simple_transition();
     &:hover {
         color: @primary_color;
         .simple_transition();
-    }
+    }    
+}
+
+.logout {
+    .logo-button();
+    left: 10px;
+    margin-right: 20px;
+}
+
+.profile {
+    .logo-button();
+    right: 10px;
+    margin-left: 20px;
 }
 
 /*

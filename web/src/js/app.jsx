@@ -575,6 +575,14 @@ class SubscriptionFormHandler extends React.Component {
     }
 }
 
+class ProfileHandler extends React.Component {
+    // use composition to separate home and main handlers
+    render() {
+        return <h1>
+            123
+        </h1>
+    }
+}
 
 ReactDOM.render(
     <Router history={browserHistory}>
@@ -585,6 +593,7 @@ ReactDOM.render(
             <Route name="category_edit" path="category/:categoryId/edit/" component={CategoryFormHandler} />
             <Route name="subscription_create" path="subscription/:providerId/create/" component={SubscriptionFormHandler} />
             <Route name="subscription_edit" path="subscription/:providerId/:subscriptionId/edit/" component={SubscriptionFormHandler} />
+            <Route name="profile" path="profile/" component={ProfileHandler} />
         </Route>
     </Router>,
     document.querySelector("#app")
