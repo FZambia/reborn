@@ -214,17 +214,23 @@ class App extends React.Component {
         }.bind(this));
     }
 
-    createCategory(name) {
+    createCategory(name, callback, errback) {
         this.ajax_action(this.props.categoryEndpoint, "POST", {"name": name}, true, function(data) {
             var categories = this.state.categories.slice(0);
             categories.push(data);
             this.setState({categories: categories});
-            console.log(this);
             this.props.router.push("/category/" + data.id + "/edit/");
+            if (callback) {
+                callback();
+            }
+        }.bind(this), function(data) {
+            if (errback) {
+                errback();
+            }
         }.bind(this));
     }
 
-    updateCategory(id, name) {
+    updateCategory(id, name, callback, errback) {
         this.ajax_action(this.props.categoryEndpoint + id + "/", "PATCH", {"name": name}, true, function(data) {
             var categories = this.state.categories.slice(0);
             for (var i in categories) {
@@ -234,6 +240,13 @@ class App extends React.Component {
                 }
             }
             this.setState({categories: categories});
+            if (callback) {
+                callback();
+            }
+        }.bind(this), function() {
+            if (errback) {
+                errback();
+            }
         }.bind(this));
     }
 
@@ -255,7 +268,7 @@ class App extends React.Component {
         }.bind(this));
     }
 
-    createSubscription(providerId, source, score, categories) {
+    createSubscription(providerId, source, score, categories, callback, errback) {
         var data = {
             provider: providerId,
             source: source,
@@ -274,10 +287,17 @@ class App extends React.Component {
             provider.subscriptions.push(data);
             this.setState({providers: providers});
             this.props.router.push("/subscription/" + providerId + "/" + data.id + "/edit/");
+            if (callback) {
+                callback();
+            }
+        }.bind(this), function() {
+            if (errback) {
+                errback();
+            }
         }.bind(this));
     }
 
-    updateSubscription(subscriptionId, providerId, source, score, categories) {
+    updateSubscription(subscriptionId, providerId, source, score, categories, callback, errback) {
         var data = {
             provider: providerId,
             source: source,
@@ -301,6 +321,13 @@ class App extends React.Component {
                 }
             }
             this.setState({providers: providers});
+            if (callback) {
+                callback();
+            }
+        }.bind(this), function(){
+            if (errback) {
+                errback();
+            }
         }.bind(this));
     }
 
@@ -398,6 +425,7 @@ class App extends React.Component {
                                 categories={this.state.categories}
                                 providers={this.state.providers}
                                 handleLogout={this.handleLogout.bind(this)}
+                                routes={this.props.routes}
                             />
                         </div>
                         <div className="content-wrapper">
@@ -576,11 +604,15 @@ class SubscriptionFormHandler extends React.Component {
 }
 
 class ProfileHandler extends React.Component {
-    // use composition to separate home and main handlers
     render() {
-        return <h1>
-            123
-        </h1>
+        return(  
+             <div className="form-container">
+                <div className="form-header">Your profile</div>
+                <div style={{"marginTop": "15px"}}>
+                    <a className="content-link" href="https://telegram.me/RebornDevelopmentNotificationBot?start=36e3adaa56d04a6693073762350c255d">Enable Telegram notifications</a>
+                </div>
+            </div>
+        )
     }
 }
 

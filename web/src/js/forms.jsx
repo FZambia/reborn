@@ -18,7 +18,8 @@ class CategoryForm extends React.Component {
         return {
             category: {
                 "name": ""
-            }
+            },
+            submitClass: "glyphicon-floppy-save"
         }
     }
 
@@ -41,13 +42,35 @@ class CategoryForm extends React.Component {
         }
     }
 
+    submitSucceded() {
+        this.setState({
+            "submitClass": "glyphicon-floppy-saved"
+        })
+        setTimeout(function(){
+            this.setState({
+                "submitClass": "glyphicon-floppy-save"
+            }) 
+        }.bind(this), 1000);
+    }
+
+    submitFailed() {
+        this.setState({
+            "submitClass": "glyphicon-floppy-remove"
+        })
+        setTimeout(function(){
+            this.setState({
+                "submitClass": "glyphicon-floppy-save"
+            }) 
+        }.bind(this), 1000);
+    }
+
     handleSubmit(e) {
         var id = this.props.category?this.props.category.id:null;
         var name = ReactDOM.findDOMNode(this.refs.name).value;
         if (!id) {
-            this.props.createCategory(name);
+            this.props.createCategory(name, this.submitSucceded.bind(this), this.submitFailed.bind(this));
         } else {
-            this.props.updateCategory(id, name);
+            this.props.updateCategory(id, name, this.submitSucceded.bind(this), this.submitFailed.bind(this));
         }
         e.preventDefault();
     }
@@ -65,6 +88,12 @@ class CategoryForm extends React.Component {
     render() {
         var header = this.props.category?"Edit category": "New category";
         var name = this.state.category.name;
+        var submitClassNames = {
+            "glyphicon": true,
+            "button-submit": true
+        };
+        submitClassNames[this.state.submitClass] = true;
+        var submitClasses = classNames(submitClassNames);
         return (
             <div className="form-container">
                 <div className="form-header">{header}</div>
@@ -76,8 +105,8 @@ class CategoryForm extends React.Component {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-12 button-container">
-                            <button type="submit">Submit</button>
-                            {this.props.category?<span className="glyphicon glyphicon-remove button-remove" onClick={this.handleDelete.bind(this)}></span>:""}
+                            <span className={submitClasses} title="Save" onClick={this.handleSubmit.bind(this)}></span>
+                            {this.props.category?<span className="glyphicon glyphicon-remove button-remove" title="Remove" onClick={this.handleDelete.bind(this)}></span>:""}
                         </div>
                     </div>
                 </form>
@@ -134,7 +163,8 @@ class SubscriptionForm extends React.Component {
                 "score": "",
                 "categories": [],
                 "source": ""
-            }
+            },
+            submitClass: "glyphicon-floppy-save"
         }
     }
 
@@ -155,6 +185,28 @@ class SubscriptionForm extends React.Component {
         } else {
             this.setState(this.getInitialState());
         }
+    }
+
+    submitSucceded() {
+        this.setState({
+            "submitClass": "glyphicon-floppy-saved"
+        })
+        setTimeout(function(){
+            this.setState({
+                "submitClass": "glyphicon-floppy-save"
+            }) 
+        }.bind(this), 1000);
+    }
+
+    submitFailed() {
+        this.setState({
+            "submitClass": "glyphicon-floppy-remove"
+        })
+        setTimeout(function(){
+            this.setState({
+                "submitClass": "glyphicon-floppy-save"
+            }) 
+        }.bind(this), 1000);
     }
 
     handleSubmit(e) {
@@ -182,9 +234,9 @@ class SubscriptionForm extends React.Component {
             }
         }
         if (!id) {
-            this.props.createSubscription(provider, name, score, categories);
+            this.props.createSubscription(provider, name, score, categories, this.submitSucceded.bind(this), this.submitFailed.bind(this));
         } else {
-            this.props.updateSubscription(id, provider, name, score, categories);
+            this.props.updateSubscription(id, provider, name, score, categories, this.submitSucceded.bind(this), this.submitFailed.bind(this));
         }
         e.preventDefault();
     }
@@ -230,6 +282,14 @@ class SubscriptionForm extends React.Component {
             var selected = this.state.subscription.categories.indexOf(item.id) > -1;
             rows.push(<CategoryFormRow name={item.name} value={item.id} selected={selected} key={item.id} onChange={this.handleCategoryChange.bind(this)} />)
         }.bind(this));
+
+        var submitClassNames = {
+            "glyphicon": true,
+            "button-submit": true
+        };
+        submitClassNames[this.state.submitClass] = true;
+        var submitClasses = classNames(submitClassNames);
+
         return (
             <div className="form-container">
                 <div className="form-header">
@@ -249,7 +309,7 @@ class SubscriptionForm extends React.Component {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-12">
-                            <h3>Categories:</h3>
+                            <h5>Categories:</h5>
                         </div>
                         <div className="col-sm-12">
                             <ul>
@@ -259,7 +319,7 @@ class SubscriptionForm extends React.Component {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-12 button-container">
-                            <button type="submit">Submit</button>
+                            <span className={submitClasses} title="Save" onClick={this.handleSubmit.bind(this)}></span>
                             {this.props.subscription?<span className="glyphicon glyphicon-remove button-remove" onClick={this.handleDelete.bind(this)}></span>:""}
                         </div>
                     </div>
@@ -277,7 +337,6 @@ class LoginForm extends React.Component {
             facebook: this.props.fbAppId
         }, {redirect_uri: this.props.redirectURI});
         Hello.login('facebook', {}, function(data) {
-            console.log(data);
             var accessToken = data.authResponse.access_token;
             self.props.handleAccessToken(data.network, accessToken);
         });
@@ -285,7 +344,6 @@ class LoginForm extends React.Component {
     }
 
     handleSubmit(e) {
-        console.log(this.props);
         this.props.handleAuth(ReactDOM.findDOMNode(this.refs.login).value, ReactDOM.findDOMNode(this.refs.password).value);
         e.preventDefault();
     }
@@ -306,7 +364,8 @@ class LoginForm extends React.Component {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-12 button-container">
-                            <button type="submit">Go</button>
+                            <input type="submit" style={{"visibility": "hidden"}} />
+                            <span className="glyphicon glyphicon-log-in button-submit" title="Save" onClick={this.handleSubmit.bind(this)}></span>
                         </div>
                     </div>
                 </form>

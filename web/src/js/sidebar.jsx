@@ -12,7 +12,7 @@ class Sidebar extends React.Component {
 
         return (
             <div className="sidebar">
-                <Logo title={this.props.title} handleLogout={this.props.handleLogout} />
+                <Logo title={this.props.title} handleLogout={this.props.handleLogout} routes={this.props.routes} />
                 <Category items={this.props.categories} />
                 {providers}
             </div>

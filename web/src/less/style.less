@@ -47,31 +47,6 @@
 */
 
 /*
-@body_background: #d6dd3b;
-@body_text_color: #969696;
-@primary_color: #53ff42;
-@primary_color_muted: #65960b;
-@link_hover: none;
-@active_sidebar_link_background: #488E46;
-@secondary_color: #a7e96c;
-@sidebar_background: #12751b;
-@content_background: #175d3a;
-@sidebar_opacity: 0.9;
-@content_opacity: 1;
-@extra_light: #fff4d2;
-@light: #c7c186;
-@input_background: @content_background;
-@input_text_color: @light;
-@input_border_color: @primary_color;
-@overlay_color: rgba(35, 83, 34, 0.80);
-@modal_color: #fff;
-@modal_background: #fff6aa;
-@form_button_color: darken(@secondary_color, 10%);
-@form_button_text_color: #ffffff;
-@pagination_text_color: #CCC;
-*/
-
-/*
 @body_background: #412f2f;
 @body_text_color: #969696;
 @primary_color: black;
@@ -96,7 +71,7 @@
 @pagination_text_color: #CCC;
 */
 
-@app_max_width: 891px;
+@app_max_width: 890px;
 
 html {
     overflow-y: scroll;
@@ -104,6 +79,21 @@ html {
 html, body {
     height: 100%;
     min-height: 100%;
+}
+
+a.content-link {
+    text-decoration: none;
+    color: @primary_color;
+    .simple_transition();
+    &:focus,
+    &:visited {
+      text-decoration: none;
+      color: @primary_color;
+    }
+    &:hover {
+      text-decoration: none;
+      color: darken(@primary_color, 20%);
+    }
 }
 
 ::-webkit-scrollbar {
@@ -500,7 +490,6 @@ a.entry-source {
     width: 120px;
 	background: @form_button_color;
 	color: @form_button_text_color;
-	font-size: 1.4em;
 	letter-spacing: 1px;
 	text-transform: uppercase;
 	cursor: pointer;
@@ -518,6 +507,21 @@ a.entry-source {
     }
 }
 
+.form-horizontal .button-container {
+    margin-top: 20px;
+}
+
+.form-horizontal .button-submit {
+    float: left;
+    font-size: 50px;
+    color: @primary_color_muted;
+    cursor: pointer;
+    &:hover {
+        color: darken(@primary_color_muted, 10%);
+        .simple_transition();
+    }
+}
+
 .form-horizontal .button-remove {
     float: right;
     font-size: 50px;
@@ -527,10 +531,8 @@ a.entry-source {
         color: darken(@form_button_color, 10%);
         .simple_transition();
     }
-    &:active {
-        background: darken(@form_button_color, 20%);
-    }
 }
+
 .pagination {
     font-size: 18px;
     text-align: center;
@@ -638,7 +640,6 @@ a.entry-source {
 
 .md-content {
 	color: @modal_color;
-	/*background: @modal_background;*/
 	position: relative;
 	border-radius: 3px;
 	margin: 0 auto;
@@ -651,7 +652,6 @@ a.entry-source {
 	font-size: 2.4em;
 	font-weight: 300;
 	opacity: 0.8;
-	/*background: darken(@modal_background, 20%);*/
 	border-radius: 3px 3px 0 0;
 }
 
@@ -714,16 +714,24 @@ a.entry-source {
     }    
 }
 
-.logout {
+.logout-button {
     .logo-button();
     left: 10px;
     margin-right: 20px;
 }
 
-.profile {
+.profile-button {
     .logo-button();
     right: 10px;
     margin-left: 20px;
+}
+
+.profile-button-active {
+    color: @secondary_color;
+    &:hover {
+        color: @secondary_color;
+        .simple_transition();
+    }    
 }
 
 /*
