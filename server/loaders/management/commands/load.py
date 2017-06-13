@@ -29,8 +29,8 @@ class Command(BaseCommand):
             if not loader_func:
                 continue
             sources = Subscription.objects.filter(
-                provider=provider
-            ).values_list('source', flat=True).distinct()
+                source__provider=provider
+            ).values_list('source__name', flat=True).distinct()
             sources_data = loader_func(sources)
             process_sources_data(provider, sources_data)
             provider.checked_at = timezone.now()

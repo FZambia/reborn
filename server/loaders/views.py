@@ -46,7 +46,7 @@ class SourceView(APIView):
     def get(self, request, *args, **kwargs):
         provider = request.auth.provider
         sources = Subscription.objects.filter(
-            source_provider=provider
+            source__provider=provider
         ).values_list('source__name', flat=True).distinct()
         return Response(sources)
 

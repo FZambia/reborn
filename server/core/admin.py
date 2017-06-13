@@ -1,5 +1,6 @@
 from django.contrib import admin
 from core.models import Provider, Category, Source, Subscription, Entry
+from django.db.models import Count
 
 
 @admin.register(Provider)
@@ -21,9 +22,18 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Source)
 class SourceAdmin(admin.ModelAdmin):
 
-    list_display = ('name', 'provider')
+    list_display = ('name', 'provider', 'num_subscriptions')
     search_fields = ('name', 'provider__name',)
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs.annotate(num_subscriptions=Count('subscription'))
+
+    def num_subscriptions(self, obj):
+      return obj.num_subscriptions
+
+    num_subscriptions.short_description = 'subscription count'
+    num_subscriptions.admin_order_field = 'num_subscriptions'
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
