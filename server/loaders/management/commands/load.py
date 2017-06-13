@@ -5,8 +5,6 @@ from loaders.reddit import load as reddit_load
 from loaders.hackernews import load as hackernews_load
 from datetime import timedelta
 from django.utils import timezone
-from django.db.models import Q
-
 
 loader_funcs = {
     "reddit": reddit_load,
