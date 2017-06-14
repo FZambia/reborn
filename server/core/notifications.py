@@ -8,7 +8,7 @@ import requests.exceptions
 
 def send_notifications(entries):
     """
-    We don't expect any Exceptions from this function - all exceptions inside 
+    We don't expect any Exceptions from this function - all exceptions inside
     this func must be catched and logged.
     """
     notify_telegram(entries)
@@ -19,15 +19,15 @@ def notify_telegram(entries):
     if not bot_token:
         return
 
-    chat_id = get_option("notifications.telegram.chat_id", "")
-    if not chat_id:
-        return
-
     for entry in entries:
+        chat_id = entry.subscription.user.profile.telegram_chat_id
+        if not chat_id:
+            continue
+
         text = "[{}]({}) ({})".format(entry.title, entry.url, entry.subscription.source)
 
         data = {
-            'chat_id': chat_id,
+            'chat_id': int(chat_id),
             'text': text,
             'parse_mode': 'Markdown'
         }

@@ -203,7 +203,9 @@ def create_entry(provider, source, entry):
     content = entry.get("content")
     score = entry.get("score")
     digest = entry.get("digest") or Entry.generate_digest(title, url, permalink, content)
-    subscriptions = Subscription.objects.filter(provider=provider, source=source, score__lte=score)
+    subscriptions = Subscription.objects.select_related('user', 'user__profile').filter(
+        provider=provider, source=source, score__lte=score
+    )
 
     for subscription in subscriptions:
         try:

@@ -14,7 +14,7 @@ class Logo extends React.Component {
         });
         return (
             <div className="logo">
-                <Link to="/profile/"><span className={profileButtonClasses} title="Profile" onClick={this.props.handleProfile}></span></Link>
+                <Link to="/dashboard/profile/"><span className={profileButtonClasses} title="Profile" onClick={this.props.handleProfile}></span></Link>
                 <Link to="/">{this.props.title}</Link>
                 <span className="glyphicon glyphicon-off logout-button" title="Logout" onClick={this.props.handleLogout}></span>
             </div>

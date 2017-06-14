@@ -50,8 +50,6 @@ def get_option(name, default_value):
 
 APP_NAME = get_option("app.name", "reborn")
 
-APP_URL = get_option("app.url", "http://localhost:10000")
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 

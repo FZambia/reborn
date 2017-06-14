@@ -12,7 +12,7 @@ class SubscriptionRow extends React.Component {
         var currentQuery = queryString.parse(location.search);
         var linkClasses = classNames({
             "subscription-link": true,
-            "active": location.pathname == "/entry/" && this.props.subscription.id == currentQuery["subscription"]
+            "active": location.pathname == "/dashboard/entry/" && this.props.subscription.id == currentQuery["subscription"]
         });
         var query = {};
         if ("search" in currentQuery) {
@@ -24,10 +24,10 @@ class SubscriptionRow extends React.Component {
         query["subscription"] = this.props.subscription.id;
         return (
             <li className="subscription">
-                <Link to={{pathname: "/entry/", query: query}} ref="link" className={linkClasses}>
+                <Link to={{pathname: "/dashboard/entry/", query: query}} ref="link" className={linkClasses}>
                     {this.props.subscription.source}
                 </Link>
-                <Link to={`/subscription/${this.props.provider.id}/${this.props.subscription.id}/edit/`} className="glyphicon glyphicon-cog row-edit"></Link>
+                <Link to={`/dashboard/subscription/${this.props.provider.id}/${this.props.subscription.id}/edit/`} className="glyphicon glyphicon-cog row-edit"></Link>
             </li>
         );
     }
@@ -66,7 +66,7 @@ class Provider extends React.Component {
             <div ref="provider" className="provider">
                 <div className="provider-name" onClick={this.handleProviderClick.bind(this)}>
                     {this.props.provider.name}
-                    <Link to={`/subscription/${this.props.provider.id}/create/`} onClick={this.handleCreateClick.bind(this)} className="glyphicon glyphicon-plus-sign row-edit"></Link>
+                    <Link to={`/dashboard/subscription/${this.props.provider.id}/create/`} onClick={this.handleCreateClick.bind(this)} className="glyphicon glyphicon-plus-sign row-edit"></Link>
                 </div>
                 <ul ref="subscriptions" className={subscriptionsClasses}>
                     {rows}

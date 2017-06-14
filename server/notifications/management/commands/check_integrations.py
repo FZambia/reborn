@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 from users.models import Profile
 from application.settings import get_option
-from django.conf import settings
 from notifications.models import KeyValue
 import requests
 import logging

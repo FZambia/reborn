@@ -24,7 +24,7 @@ class CategoryAllRow extends React.Component {
                 <Link to="/" ref="link" className={className}>
                     {this.props.name}
                 </Link>
-                <Link to="/category/create/" className="glyphicon glyphicon-plus-sign row-edit"></Link>
+                <Link to="/dashboard/category/create/" className="glyphicon glyphicon-plus-sign row-edit"></Link>
             </li>
         );
     }
@@ -35,7 +35,7 @@ class CategoryRow extends React.Component {
         var currentQuery = queryString.parse(location.search);
         var linkClasses = classNames({
             "category-link": true,
-            "active": location.pathname == "/entry/" && this.props.id == currentQuery["category"]
+            "active": location.pathname == "/dashboard/entry/" && this.props.id == currentQuery["category"]
         });
         var query = {};
         if ("search" in currentQuery) {
@@ -47,10 +47,10 @@ class CategoryRow extends React.Component {
         query["category"] = this.props.id;
         return (
             <li className="category">
-                <Link to={{pathname: "/entry/", query: query}} ref="link" className={linkClasses}>
+                <Link to={{pathname: "/dashboard/entry/", query: query}} ref="link" className={linkClasses}>
                     {this.props.name}
                 </Link>
-                <Link to={`/category/${this.props.id}/edit/`} className="glyphicon glyphicon-cog row-edit"></Link>
+                <Link to={`/dashboard/category/${this.props.id}/edit/`} className="glyphicon glyphicon-cog row-edit"></Link>
             </li>
         );
     }

@@ -219,7 +219,7 @@ class App extends React.Component {
             var categories = this.state.categories.slice(0);
             categories.push(data);
             this.setState({categories: categories});
-            this.props.router.push("/category/" + data.id + "/edit/");
+            this.props.router.push("/dashboard/category/" + data.id + "/edit/");
             if (callback) {
                 callback();
             }
@@ -286,7 +286,7 @@ class App extends React.Component {
             }
             provider.subscriptions.push(data);
             this.setState({providers: providers});
-            this.props.router.push("/subscription/" + providerId + "/" + data.id + "/edit/");
+            this.props.router.push("/dashboard/subscription/" + providerId + "/" + data.id + "/edit/");
             if (callback) {
                 callback();
             }
@@ -351,7 +351,7 @@ class App extends React.Component {
                 }
             }
             this.setState({providers: providers});
-            this.transitionTo("home", {}, {});
+            this.props.router.push("/");
         }.bind(this));
     }
 
@@ -620,12 +620,12 @@ ReactDOM.render(
     <Router history={browserHistory}>
         <Route path="/" component={App}>
             <IndexRoute name="home" component={HomeHandler} />
-            <Route name="entry" path="entry/" component={EntryHandler} />
-            <Route name="category_create" path="category/create/" component={CategoryFormHandler} />
-            <Route name="category_edit" path="category/:categoryId/edit/" component={CategoryFormHandler} />
-            <Route name="subscription_create" path="subscription/:providerId/create/" component={SubscriptionFormHandler} />
-            <Route name="subscription_edit" path="subscription/:providerId/:subscriptionId/edit/" component={SubscriptionFormHandler} />
-            <Route name="profile" path="profile/" component={ProfileHandler} />
+            <Route name="entry" path="dashboard/entry/" component={EntryHandler} />
+            <Route name="category_create" path="dashboard/category/create/" component={CategoryFormHandler} />
+            <Route name="category_edit" path="dashboard/category/:categoryId/edit/" component={CategoryFormHandler} />
+            <Route name="subscription_create" path="dashboard/subscription/:providerId/create/" component={SubscriptionFormHandler} />
+            <Route name="subscription_edit" path="dashboard/subscription/:providerId/:subscriptionId/edit/" component={SubscriptionFormHandler} />
+            <Route name="profile" path="dashboard/profile/" component={ProfileHandler} />
         </Route>
     </Router>,
     document.querySelector("#app")
