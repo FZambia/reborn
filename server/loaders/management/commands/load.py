@@ -1,10 +1,11 @@
 from django.core.management.base import BaseCommand
 from core.models import Provider, Subscription
-from core.views import process_sources_data
-from loaders.reddit import load as reddit_load
-from loaders.hackernews import load as hackernews_load
+from loaders.views import process_sources_data
+from loaders.providers.reddit import load as reddit_load
+from loaders.providers.hackernews import load as hackernews_load
 from datetime import timedelta
 from django.utils import timezone
+
 
 loader_funcs = {
     "reddit": reddit_load,
@@ -28,8 +29,8 @@ class Command(BaseCommand):
             if not loader_func:
                 continue
             sources = Subscription.objects.filter(
-                provider=provider
-            ).values_list('source', flat=True).distinct()
+                source__provider=provider
+            ).values_list('source__name', flat=True).distinct()
             sources_data = loader_func(sources)
             process_sources_data(provider, sources_data)
             provider.checked_at = timezone.now()

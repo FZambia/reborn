@@ -139,7 +139,7 @@ class App extends React.Component {
                 }
                 var subscriptions = data.subscriptions;
                 for (var i in subscriptions) {
-                    var providerID = subscriptions[i]["provider"];
+                    var providerID = subscriptions[i]["source"]["provider"];
                     providers[positions[providerID]]["subscriptions"].push(subscriptions[i]);
                 }
 

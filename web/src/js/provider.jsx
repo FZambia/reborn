@@ -25,7 +25,7 @@ class SubscriptionRow extends React.Component {
         return (
             <li className="subscription">
                 <Link to={{pathname: "/dashboard/entry/", query: query}} ref="link" className={linkClasses}>
-                    {this.props.subscription.source}
+                    {this.props.subscription.source.name}
                 </Link>
                 <Link to={`/dashboard/subscription/${this.props.provider.id}/${this.props.subscription.id}/edit/`} className="glyphicon glyphicon-cog row-edit"></Link>
             </li>
