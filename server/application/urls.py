@@ -27,9 +27,11 @@ def init(request):
     if not is_authenticated:
         auth = TokenAuthentication()
         try:
-            user, _ = auth.authenticate(request)
+            result = auth.authenticate(request)
+            if result:
+                user, _ = result
         except AuthenticationFailed:
-            is_authenticated = False
+            pass
         else:
             if user:
                 is_authenticated = True
