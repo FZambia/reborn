@@ -34,6 +34,19 @@ class SubscriptionRow extends React.Component {
 }
 
 class Provider extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = this.getInitialState();
+    }
+
+    getInitialState() {
+        var key = "subscriptions_hidden_" + this.props.provider.id;
+        return {
+            sourcesHidden: localStorage[key] = "1"
+        }
+    }
+
     handleProviderClick(e) {
         var subscriptions = $(ReactDOM.findDOMNode(this.refs.subscriptions));
         subscriptions.toggleClass("subscriptions-hidden");
@@ -43,6 +56,7 @@ class Provider extends React.Component {
         } else {
             localStorage[key] = "0";
         }
+        this.setState({sourcesHidden: !this.state.sourcesHidden});
         return false;
     }
 
@@ -62,9 +76,15 @@ class Provider extends React.Component {
             'subscriptions-hidden': localStorage[hiddenKey] === "1"
         });
 
+        var openIcon;
+        if (this.state.sourcesHidden) {
+            openIcon = <span className="glyphicon glyphicon-hand-down open"></span>;
+        }
+
         return (
             <div ref="provider" className="provider">
                 <div className="provider-name" onClick={this.handleProviderClick.bind(this)}>
+                    {openIcon}
                     {this.props.provider.name}
                     <Link to={`/dashboard/subscription/${this.props.provider.id}/create/`} onClick={this.handleCreateClick.bind(this)} className="glyphicon glyphicon-plus-sign row-edit"></Link>
                 </div>
