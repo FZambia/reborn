@@ -10,6 +10,7 @@ from rest_framework.exceptions import AuthenticationFailed
 
 import json
 
+from application.settings import get_option
 from core.serializers import ProviderSerializer, SubscriptionSerializer, CategorySerializer
 from core.models import Provider, Subscription, Category
 
@@ -53,6 +54,7 @@ def init(request):
             ]
         }
     else:
+        context["telegram_bot_name"] = get_option("notifications.telegram.bot_name", "")
         # Provide initialization data for authenticated user.
         context["providers"] = ProviderSerializer(
             Provider.objects.all(), many=True).data
@@ -60,6 +62,10 @@ def init(request):
             Category.objects.filter(user=user), many=True).data
         context["subscriptions"] = SubscriptionSerializer(
             Subscription.objects.filter(user=user), many=True).data
+        profile = user.profile
+        context["profile"] = {
+            "uid": profile.uid
+        }
 
     return HttpResponse(json.dumps(context), content_type="application/json")
 
