@@ -105,6 +105,7 @@ class CategoryForm extends React.Component {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-12 button-container">
+                            <input type="submit" style={{"visibility": "hidden"}} />
                             <span className={submitClasses} title="Save" onClick={this.handleSubmit.bind(this)}></span>
                             {this.props.category?<span className="glyphicon glyphicon-remove button-remove" title="Remove" onClick={this.handleDelete.bind(this)}></span>:""}
                         </div>
@@ -329,6 +330,7 @@ class SubscriptionForm extends React.Component {
                     </div>
                     <div className="form-group">
                         <div className="col-sm-12 button-container">
+                            <input type="submit" style={{"visibility": "hidden"}} />
                             <span className={submitClasses} title="Save" onClick={this.handleSubmit.bind(this)}></span>
                             {this.props.subscription?<span className="glyphicon glyphicon-remove button-remove" onClick={this.handleDelete.bind(this)}></span>:""}
                         </div>

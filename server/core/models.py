@@ -2,6 +2,7 @@ from hashlib import md5
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+import uuid
 
 
 # in minutes
@@ -59,11 +60,33 @@ class Source(models.Model):
         unique_together = ('provider', 'name')
 
 
+class Dashboard(models.Model):
+    """
+    Dashboard that belongs to user.
+    """
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    uid = models.CharField(max_length=32, unique=True)
+    is_default = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return "Dashboard for {}".format(self.user.username)
+
+    class Meta:
+        verbose_name = _("dashboard")
+        verbose_name_plural = _("dashboards")
+
+    def save(self, **kwargs):
+        if not self.pk:
+            self.uid = uuid.uuid4().hex
+        super().save(**kwargs)
+
+
 class Subscription(models.Model):
     """
     User defined subscription to source string from provider.
     """
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    dashboard = models.ForeignKey(Dashboard)
     source = models.ForeignKey(Source)
     score = models.PositiveIntegerField(default=0)
     categories = models.ManyToManyField(Category, blank=True)
@@ -74,7 +97,7 @@ class Subscription(models.Model):
     class Meta:
         verbose_name = _("subscription")
         verbose_name_plural = _("subscriptions")
-        unique_together = ('user', 'source')
+        unique_together = ('dashboard', 'source')
 
 
 class Entry(models.Model):

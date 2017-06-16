@@ -11,8 +11,8 @@ from rest_framework.exceptions import AuthenticationFailed
 import json
 
 from application.settings import get_option
-from core.serializers import ProviderSerializer, SubscriptionSerializer, CategorySerializer
-from core.models import Provider, Subscription, Category
+from core.serializers import ProviderSerializer, SubscriptionSerializer, CategorySerializer, DashboardSerializer
+from core.models import Provider, Subscription, Category, Dashboard
 
 
 @require_POST
@@ -60,12 +60,10 @@ def init(request):
             Provider.objects.all(), many=True).data
         context["categories"] = CategorySerializer(
             Category.objects.filter(user=user), many=True).data
+        dashboard = Dashboard.objects.get(user=user, is_default=True)
+        context["dashboard"] = DashboardSerializer(dashboard).data
         context["subscriptions"] = SubscriptionSerializer(
-            Subscription.objects.filter(user=user), many=True).data
-        profile = user.profile
-        context["profile"] = {
-            "uid": profile.uid
-        }
+            Subscription.objects.filter(dashboard=dashboard), many=True).data
 
     return HttpResponse(json.dumps(context), content_type="application/json")
 

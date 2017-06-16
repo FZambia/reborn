@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import Provider, Category, Source, Subscription, Entry
+from core.models import Provider, Category, Dashboard, Source, Subscription, Entry
 from django.db.models import Count
 
 
@@ -19,6 +19,13 @@ class CategoryAdmin(admin.ModelAdmin):
     list_editable = ('is_active', )
 
 
+@admin.register(Dashboard)
+class DashboardAdmin(admin.ModelAdmin):
+
+    list_display = ('user', 'is_default', 'is_active')
+    raw_id_fields = ('user', )
+
+
 @admin.register(Source)
 class SourceAdmin(admin.ModelAdmin):
 
@@ -30,19 +37,19 @@ class SourceAdmin(admin.ModelAdmin):
         return qs.annotate(num_subscriptions=Count('subscription'))
 
     def num_subscriptions(self, obj):
-      return obj.num_subscriptions
+        return obj.num_subscriptions
 
     num_subscriptions.short_description = 'subscription count'
     num_subscriptions.admin_order_field = 'num_subscriptions'
 
+
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
 
-    list_display = ('__str__', 'source', 'score', )
+    list_display = ('__str__', 'dashboard', 'source', 'score', )
     list_editable = ('source', 'score', )
-    list_filter = ('user',)
     filter_horizontal = ('categories', )
-    raw_id_fields = ('user', 'source', )
+    raw_id_fields = ('dashboard', 'source', )
 
 
 @admin.register(Entry)

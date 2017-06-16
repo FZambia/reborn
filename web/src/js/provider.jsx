@@ -43,7 +43,7 @@ class Provider extends React.Component {
     getInitialState() {
         var key = "subscriptions_hidden_" + this.props.provider.id;
         return {
-            sourcesHidden: localStorage[key] = "1"
+            sourcesHidden: localStorage[key] === "1"
         }
     }
 

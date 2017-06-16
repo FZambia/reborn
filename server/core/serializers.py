@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import Category, Provider, Source, Subscription, Entry
+from core.models import Category, Provider, Source, Subscription, Entry, Dashboard
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -18,6 +18,13 @@ class ProviderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Provider
         fields = ('id', 'name')
+
+
+class DashboardSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Dashboard
+        fields = ('uid',)
 
 
 class SourceSerializer(serializers.ModelSerializer):
@@ -45,7 +52,8 @@ class SubscriptionSerializer(serializers.ModelSerializer):
         super().save(**kwargs)
 
     def create(self, validated_data):
-        validated_data["user"] = self.context["request"].user
+        dashboard = Dashboard.objects.get(user=self.context["request"].user, is_default=True)
+        validated_data["dashboard"] = dashboard
         return super(SubscriptionSerializer, self).create(validated_data)
 
 

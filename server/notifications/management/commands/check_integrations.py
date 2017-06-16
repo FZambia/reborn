@@ -1,13 +1,11 @@
 from django.core.management.base import BaseCommand
-from users.models import Profile
+from core.models import Dashboard
 from application.settings import get_option
 from notifications.models import KeyValue
 import requests
 import logging
 import requests.exceptions
 import traceback
-import hmac
-from hashlib import sha256
 
 
 class Command(BaseCommand):
@@ -15,15 +13,8 @@ class Command(BaseCommand):
     help = "Load from content providers"
 
     def handle(self, *args, **options):
-        check_telegram_integration()
-
-
-def generate_integration_token(chat_id):
-    secret = get_option("app.secret", "")
-    h = hmac.new(secret.encode(), digestmod=sha256)
-    h.update(str(chat_id).encode())
-    token = h.hexdigest()
-    return token
+        if get_option("notifications.telegram.enabled", False):
+            check_telegram_integration()
 
 
 def check_telegram_integration():
@@ -57,7 +48,6 @@ def check_telegram_integration():
     for update in data.get("result", []):
         update_id = update["update_id"]
         message = update.get("message")
-        print(message)
         if message:
             process_telegram_message(message)
 
@@ -79,12 +69,12 @@ def process_telegram_message(message):
     chat_id = message["chat"]["id"]
 
     try:
-        profile = Profile.objects.select_related("user").get(uid=uid)
-    except Profile.DoesNotExist:
+        dashboard = Dashboard.objects.select_related("user", "notification_profile").get(uid=uid)
+    except Dashboard.DoesNotExist:
         return
 
-    profile.telegram_chat_id = str(chat_id)
-    profile.save()
+    dashboard.notification_profile.telegram_chat_id = str(chat_id)
+    dashboard.notification_profile.save()
 
     text = "Integration completed"
 

@@ -42,6 +42,7 @@ class App extends React.Component {
         this.state = {
             title: "",
             telegram_bot_name: "",
+            dashboard: {},
             categories: [],
             providers: [],
             providersByID: {},
@@ -151,7 +152,7 @@ class App extends React.Component {
                     categories: data.categories,
                     subscriptions: subscriptions,
                     initialized: true,
-                    profile: data.profile,
+                    dashboard: data.dashboard,
                     telegramBotName: data.telegram_bot_name
                 });
             } else {
@@ -610,12 +611,12 @@ class ProfileHandler extends React.Component {
     render() {
         var telegramLink = null;
         if (this.props.app.state.telegramBotName) {
-            var url = "https://telegram.me/" + this.props.app.state.telegram_bot_name + "?start=" + this.props.app.state.profile.uid;
+            var url = "https://telegram.me/" + this.props.app.state.telegram_bot_name + "?start=" + this.props.app.state.dashboard.uid;
             telegramLink = <a className="content-link" href={url}>Enable Telegram notifications</a>
         }
         return(
              <div className="form-container">
-                <div className="form-header">Your profile</div>
+                <div className="form-header">Your dashboard</div>
                 <div style={{"marginTop": "15px"}}>
                     {telegramLink}
                 </div>

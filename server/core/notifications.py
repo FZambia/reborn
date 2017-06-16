@@ -20,7 +20,7 @@ def notify_telegram(entries):
         return
 
     for entry in entries:
-        chat_id = entry.subscription.user.profile.telegram_chat_id
+        chat_id = entry.subscription.dashboard.telegram_chat_id
         if not chat_id:
             continue
 

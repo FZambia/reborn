@@ -12,7 +12,7 @@ from rest_framework import filters
 from rest_framework import status
 from rest_framework.response import Response
 
-from core.models import Category, Provider, Subscription, Entry
+from core.models import Category, Subscription, Entry
 import core.serializers as serializers
 
 
@@ -89,7 +89,7 @@ class SubscriptionViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = super(SubscriptionViewSet, self).get_queryset()
-        qs = qs.filter(user=self.request.user)
+        qs = qs.filter(dashboard__user=self.request.user)
         return qs
 
 
@@ -105,7 +105,7 @@ class EntryViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = super(EntryViewSet, self).get_queryset()
-        qs = qs.filter(subscription__user=self.request.user)
+        qs = qs.filter(subscription__dashboard__user=self.request.user)
         if "category" in self.request.query_params:
             qs = qs.filter(subscription__categories=self.request.query_params["category"])
         if "search" in self.request.query_params:
